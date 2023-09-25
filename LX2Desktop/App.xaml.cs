@@ -10,20 +10,33 @@ public partial class App : Application
 
         MainPage = new AppShell();
 
-        Microsoft.Maui.Handlers.WindowHandler.Mapper.AppendToMapping(nameof(IWindow), (handler, view) =>
+        Microsoft.Maui.Handlers.WebViewHandler.Mapper.AppendToMapping(nameof(IWindow), (handler, view) =>
         {
+/*
 #if WINDOWS
+
             var nativeWindow = handler.PlatformView;
             nativeWindow.Activate();
             IntPtr windowHandle = WinRT.Interop.WindowNative.GetWindowHandle(nativeWindow);
             ShowWindow(windowHandle, 3);
 #endif
+*/
         });
     }
 
-#if WINDOWS
-    [DllImport("user32.dll")]
-    public static extern bool ShowWindow(IntPtr hWnd, int cmdShow);
-#endif
+    protected override Window CreateWindow(IActivationState activationState)
+    {
+        var window =  base.CreateWindow(activationState);
+        window.Width = 1300;
+
+        return window;
+    }
+
+   
+   #if WINDOWS
+       [DllImport("user32.dll")]
+       public static extern bool ShowWindow(IntPtr hWnd, int cmdShow);
+   #endif
+   
 }
 
